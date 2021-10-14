@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.hastellc.workoutapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
