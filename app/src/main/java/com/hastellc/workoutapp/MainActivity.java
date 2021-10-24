@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void createAccount() {
+    public void createAccount(View view) {
         if (!validateForm()) {
             return;
         }
