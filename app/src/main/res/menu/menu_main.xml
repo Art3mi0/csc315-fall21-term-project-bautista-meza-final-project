@@ -4,6 +4,7 @@
 
     <item android:id="@+id/sign_out"
         android:title="@string/logout"
+        android:icon="@drawable/logout_img"
         android:orderInCategory="1"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>
