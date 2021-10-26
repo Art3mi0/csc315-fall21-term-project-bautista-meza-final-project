@@ -109,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(MainActivity.this, "Sign in Successful: " ,
+                                    Toast.LENGTH_SHORT).show();
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -138,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(MainActivity.this, "Account created successfully.",
+                                    Toast.LENGTH_SHORT).show();
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
