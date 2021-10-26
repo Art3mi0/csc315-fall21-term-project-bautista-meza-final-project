@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createAccount(View view) {
+        // Method for creating
         if (!validateForm()) {
             return;
         }
@@ -170,12 +171,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Creates the options menu on start
+        // Should only be called once
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
+        // The clean way of changing menu item visibility
+        // just call the invalidateOptionsMenu() method witch calls this
         MenuItem logoutItem = menu.findItem(R.id.sign_out);
         if (logoutItemView) {
             logoutItem.setVisible(true);
@@ -188,6 +193,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Method for performing action from buttons in menus
+        // Add another case with the item id then just add the code for
+        // what you want it to do
         switch (item.getItemId()) {
             case R.id.sign_out:
                 mAuth.signOut();
