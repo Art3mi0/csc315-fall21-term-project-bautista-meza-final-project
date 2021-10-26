@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(MainActivity.this, "Sign in Successful: " ,
+                            Toast.makeText(MainActivity.this, "Sign in Successful " ,
                                     Toast.LENGTH_SHORT).show();
 
                             updateUI(user);
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signOut();
                 FirebaseUser user = mAuth.getCurrentUser();
                 updateUI(user);
-                Toast.makeText(MainActivity.this, "Log Out Successful",
+                Toast.makeText(MainActivity.this, "Log Out Successful!",
                         Toast.LENGTH_SHORT).show();
                 return true;
             default:
