@@ -2,11 +2,15 @@ package com.hastellc.workoutapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -53,10 +57,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbar.showOverflowMenu();
+            setSupportActionBar(toolbar);
             mLoggedOutGroup.setVisibility(View.GONE);
             mLoggedInGroup.setVisibility(View.VISIBLE);
             mNameLabel.setText(String.format(getResources().getString(R.string.hello), currentUser.getEmail()));
         } else {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            toolbar.hideOverflowMenu();
             mLoggedInGroup.setVisibility(View.GONE);
             mLoggedOutGroup.setVisibility(View.VISIBLE);
         }
@@ -154,5 +164,24 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                mAuth.signOut();
+                FirebaseUser user = mAuth.getCurrentUser();
+                updateUI(user);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
