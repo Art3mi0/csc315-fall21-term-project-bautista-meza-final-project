@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     private void updateUI(FirebaseUser currentUser) {
         // Changes between signin/up page and home page if the user is not null
         if (currentUser != null) {
