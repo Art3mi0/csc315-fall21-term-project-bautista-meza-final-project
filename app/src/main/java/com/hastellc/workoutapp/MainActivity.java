@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser currentUser) {
+        // Changes between signin/up page and home page if the user is not null
         if (currentUser != null) {
             logoutItemView = true;
             invalidateOptionsMenu();
@@ -74,17 +75,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            //reload();
-        }
-    }
-
     private boolean validateForm() {
+        // Method for validating edit text fields on signin/up page
         boolean valid = true;
 
         String email = mEmailField.getText().toString();
@@ -107,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
+        // Method for signing in a user
         if (!validateForm()) {
             return;
         }
@@ -138,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createAccount(View view) {
-        // Method for creating
+        // Method for creating user account and updating ui to homebase when successful
         if (!validateForm()) {
             return;
         }
