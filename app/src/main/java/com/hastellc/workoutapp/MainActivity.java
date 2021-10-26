@@ -54,10 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void signOut(View view) {
-        mAuth.signOut();
-        updateUI(null);
-    }
+
 
     private void updateUI(FirebaseUser currentUser) {
         // Changes between signin/up page and home page if the user is not null
@@ -194,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signOut();
                 FirebaseUser user = mAuth.getCurrentUser();
                 updateUI(user);
+                Toast.makeText(MainActivity.this, "Log Out Successful",
+                        Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
