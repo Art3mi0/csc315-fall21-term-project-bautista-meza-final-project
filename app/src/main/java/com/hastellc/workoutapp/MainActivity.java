@@ -138,6 +138,12 @@ public class MainActivity extends AppCompatActivity {
         adapter.addAll(mRandomWorkout);
     }
 
+    public void onBeginChadWorkout(View view){
+        Intent intent = new Intent(this, ChadWorkout.class);
+        startActivity(intent);
+    }
+
+
     private void updateUI(FirebaseUser currentUser) {
         // Changes between signin/up page and home page if the user is not null
         if (currentUser != null) {
@@ -285,6 +291,17 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+
+            case R.id.history:
+                Intent intent = new Intent(this, History.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.favorites:
+                Intent intent2  = new Intent(this,Favorites.class);
+                startActivity(intent2);
+                return true;
         }
+
     }
 }

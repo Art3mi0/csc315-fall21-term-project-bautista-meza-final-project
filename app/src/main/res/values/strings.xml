@@ -7,6 +7,7 @@
     <string name="register">Create New Account</string>
     <string name="hello">Welcome %1$s!</string>
     <string name="workout_button">Generate Workout</string>
+    <string name="begin_workout_button">Begin Chad Workout</string>
     <string name="history">history</string>
     <string name="favorites">favorites</string>
 

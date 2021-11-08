@@ -28,17 +28,35 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <Button
             android:id="@+id/workout_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/workout_button"
-            android:onClick="onGenerate"
             android:layout_margin="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:onClick="onGenerate"
+            android:text="@string/workout_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hello"
-            />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hello" />
+
+        <Button
+            android:id="@+id/begin_chad_transformation_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/begin_workout_button"
+            android:onClick="onBeginChadWorkout"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/workout_button"
+            app:layout_constraintTop_toBottomOf="@id/hello" />
 
         <ListView
             android:id="@+id/workoutListView"
