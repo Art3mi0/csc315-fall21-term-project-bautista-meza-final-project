@@ -8,7 +8,14 @@
     <string name="hello">Welcome %1$s!</string>
     <string name="workout_button">Generate Workout</string>
     <string name="begin_workout_button">Begin Chad Workout</string>
-    <string name="history">history</string>
-    <string name="favorites">favorites</string>
+    <string name="history">HISTORY</string>
+    <string name="favorites">FAVORITES</string>
+
+    <string name="history_instructions">Click any workout to revisit it.</string>
+    <string name="favorites_instructions">Click any favorited workout to revisit it.</string>
+
+    <string name="begin_workout">CHAD WORKOUT</string>
+
+
 
 </resources>

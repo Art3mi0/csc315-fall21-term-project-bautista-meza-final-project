@@ -18,14 +18,16 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/gigachad2"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/gigachad2" />
 
         <TextView
             android:id="@+id/hello_history"
             android:text="@string/history"
+            android:textColor="@color/colorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
@@ -44,7 +46,16 @@
             app:layout_constraintTop_toBottomOf="@id/hello_history"
             />
 
-
+        <TextView
+            android:id="@+id/history_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/history_instructions"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/history_listView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

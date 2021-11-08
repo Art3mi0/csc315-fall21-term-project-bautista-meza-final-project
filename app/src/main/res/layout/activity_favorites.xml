@@ -25,6 +25,7 @@
 
         <TextView
             android:id="@+id/hello_favorites"
+            android:textColor="@color/colorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
@@ -35,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ListView
-            android:id="@+id/history_listView"
+            android:id="@+id/favorite_listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -44,7 +45,16 @@
             app:layout_constraintTop_toBottomOf="@id/hello_favorites"
             />
 
-
+        <TextView
+            android:id="@+id/favorite_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorites_instructions"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/favorite_listView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
