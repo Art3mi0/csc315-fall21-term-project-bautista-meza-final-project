@@ -118,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         adapter.clear();
                         adapter.addAll(workouts);
-                        Button workout = findViewById(R.id.workout_button);
-                        workout.setText(workouts.get(1).getName());
                     }
                 });
     }
