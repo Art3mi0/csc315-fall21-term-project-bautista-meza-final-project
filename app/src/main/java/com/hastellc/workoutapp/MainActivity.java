@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mNameLabel;
     private EditText mEmailField;
     private EditText mPasswordField;
-    //private ListView mWorkoutList;
+    private ListView mWorkoutList;
 
     private boolean logoutItemView = true;
 
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mNameLabel = findViewById(R.id.hello);
         mEmailField = findViewById(R.id.email);
         mPasswordField = findViewById(R.id.password);
-        ListView mWorkoutList = findViewById(R.id.workoutListView);
+        mWorkoutList = findViewById(R.id.workoutListView);
 
         adapter = new WorkoutAdapter(this, new ArrayList<Workout>());
         mWorkoutList.setAdapter(adapter);
@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
             mLoggedOutGroup.setVisibility(View.GONE);
             mLoggedInGroup.setVisibility(View.VISIBLE);
             mNameLabel.setText(String.format(getResources().getString(R.string.hello), currentUser.getEmail()));
+            mWorkoutList = findViewById(R.id.workoutListView);
         } else {
             logoutItemView = false;
             invalidateOptionsMenu();
