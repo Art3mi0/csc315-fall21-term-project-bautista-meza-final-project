@@ -1,37 +1,57 @@
 package com.hastellc.workoutapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private static final String TAG = "MainActivity";
 
+    private final FirebaseFirestore mDb = FirebaseFirestore.getInstance();
+
+    private ArrayAdapter<Workout> adapter;
+
     private ConstraintLayout mLoggedInGroup;
     private ConstraintLayout mLoggedOutGroup;
     private TextView mNameLabel;
     private EditText mEmailField;
     private EditText mPasswordField;
+    //private ListView mWorkoutList;
 
     private boolean logoutItemView = true;
 
@@ -47,11 +67,61 @@ public class MainActivity extends AppCompatActivity {
         mNameLabel = findViewById(R.id.hello);
         mEmailField = findViewById(R.id.email);
         mPasswordField = findViewById(R.id.password);
+        ListView mWorkoutList = findViewById(R.id.workoutListView);
+
+        adapter = new WorkoutAdapter(this, new ArrayList<Workout>());
+        mWorkoutList.setAdapter(adapter);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
 
+    }
+
+    class WorkoutAdapter extends ArrayAdapter<Workout> {
+
+        ArrayList<Workout> workouts;
+        WorkoutAdapter(Context context, ArrayList<Workout> workouts) {
+            super(context, 0, workouts);
+            this.workouts = workouts;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.workout_list_item, parent, false);
+            }
+
+            TextView workoutName = convertView.findViewById(R.id.workoutName);
+            TextView workoutRep = convertView.findViewById(R.id.workoutRep);
+
+            Workout w = workouts.get(position);
+            workoutName.setText(w.getName());
+            workoutRep.setText(w.getReps());
+
+            return convertView;
+        }
+    }
+
+    public void onGetWorkouts(View view) {
+        mDb.collection("workouts")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        ArrayList<Workout> workouts = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Workout w = document.toObject(Workout.class);
+                            workouts.add(w);
+                            Log.d(TAG, w.getType() + " " + w.getName() + " " + w.getReps());
+                        }
+                        adapter.clear();
+                        adapter.addAll(workouts);
+                        Button workout = findViewById(R.id.workout_button);
+                        workout.setText(workouts.get(1).getName());
+                    }
+                });
     }
 
     private void updateUI(FirebaseUser currentUser) {

@@ -6,5 +6,6 @@
     <string name="login">Login</string>
     <string name="register">Create New Account</string>
     <string name="hello">Welcome %1$s!</string>
+    <string name="workout_button">Chad Me</string>
 
 </resources>
