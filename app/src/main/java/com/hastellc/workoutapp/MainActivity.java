@@ -239,11 +239,17 @@ public class MainActivity extends AppCompatActivity {
         // The clean way of changing menu item visibility
         // just call the invalidateOptionsMenu() method witch calls this
         MenuItem logoutItem = menu.findItem(R.id.sign_out);
+        MenuItem historyItem = menu.findItem(R.id.history);
+        MenuItem favoritesItem = menu.findItem(R.id.favorites);
         if (logoutItemView) {
             logoutItem.setVisible(true);
+            historyItem.setVisible(true);
+            favoritesItem.setVisible(true);
             return true;
         } else {
             logoutItem.setVisible(false);
+            historyItem.setVisible(false);
+            favoritesItem.setVisible(false);
         }
         return true;
     }

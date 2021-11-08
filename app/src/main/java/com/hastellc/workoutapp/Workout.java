@@ -7,14 +7,16 @@ public class Workout {
     private String type;
     private String name;
     private String reps;
+    private String equipment;
 
     public Workout() {
     }
 
-    public Workout(String type, String name, String reps) {
+    public Workout(String type, String name, String reps, String equipment) {
         this.type = type;
         this.name = name;
         this.reps = reps;
+        this.equipment = equipment;
     }
 
     public String getType() {
@@ -29,17 +31,7 @@ public class Workout {
         return reps;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setReps(String reps) {
-        this.reps = reps;
-    }
 
     @NonNull
     @Override
