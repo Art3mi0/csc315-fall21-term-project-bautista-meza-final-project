@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEmailField;
     private EditText mPasswordField;
     private ListView mWorkoutList;
+    private ArrayList<Workout> mWorkouts;
+    private ArrayList<Workout> mRandomWorkout;
 
     private boolean logoutItemView = true;
 
@@ -94,32 +98,44 @@ public class MainActivity extends AppCompatActivity {
             }
 
             TextView workoutName = convertView.findViewById(R.id.workoutName);
-            TextView workoutRep = convertView.findViewById(R.id.workoutRep);
 
             Workout w = workouts.get(position);
             workoutName.setText(w.getName());
-            workoutRep.setText(w.getReps());
 
             return convertView;
         }
     }
 
-    public void onGetWorkouts(View view) {
+    public void getWorkouts() {
         mDb.collection("workouts")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        ArrayList<Workout> workouts = new ArrayList<>();
+                        mWorkouts = new ArrayList<>();
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             Workout w = document.toObject(Workout.class);
-                            workouts.add(w);
+                            mWorkouts.add(w);
                             Log.d(TAG, w.getType() + " " + w.getName() + " " + w.getReps());
                         }
-                        adapter.clear();
-                        adapter.addAll(workouts);
                     }
                 });
+    }
+
+    public void onGenerate(View view) {
+        Random rand = new Random();
+        Workout workout;
+        int arraySize = mWorkouts.size() - 1;
+        mRandomWorkout = new ArrayList<>();
+
+        while (mRandomWorkout.size() != 2) {
+            workout = mWorkouts.get(rand.nextInt(arraySize));
+            if (!mRandomWorkout.contains(workout)) {
+                mRandomWorkout.add(workout);
+            }
+        }
+        adapter.clear();
+        adapter.addAll(mRandomWorkout);
     }
 
     private void updateUI(FirebaseUser currentUser) {
@@ -130,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             mLoggedOutGroup.setVisibility(View.GONE);
             mLoggedInGroup.setVisibility(View.VISIBLE);
             mNameLabel.setText(String.format(getResources().getString(R.string.hello), currentUser.getEmail()));
-            mWorkoutList = findViewById(R.id.workoutListView);
+            getWorkouts();
         } else {
             logoutItemView = false;
             invalidateOptionsMenu();
