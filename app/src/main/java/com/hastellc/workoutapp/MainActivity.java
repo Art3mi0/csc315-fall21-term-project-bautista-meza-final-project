@@ -141,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBeginChadWorkout(View view){
+        if (mRandomWorkout == null) {
+            Toast.makeText(MainActivity.this, "Can't begin what hasn't been made", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(this, ChadWorkout.class);
         startActivity(intent);
     }
