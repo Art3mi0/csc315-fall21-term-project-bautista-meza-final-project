@@ -34,7 +34,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mPasswordField;
     private ListView mWorkoutList;
     private ArrayList<Workout> mWorkouts;
-    private ArrayList<Workout> mRandomWorkout;
+    public static ArrayList<Workout> mRandomWorkout;
 
     private boolean logoutItemView = true;
 

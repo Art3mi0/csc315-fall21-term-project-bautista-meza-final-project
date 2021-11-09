@@ -2,17 +2,18 @@ package com.hastellc.workoutapp;
 
 import androidx.annotation.NonNull;
 
-public class Workout {
+public class Favorite {
 
     private String type;
     private String name;
     private String reps;
     private String equipment;
+    private String favoriteName;
 
-    public Workout() {
+    public Favorite() {
     }
 
-    public Workout(String type, String name, String reps, String equipment) {
+    public Favorite(String type, String name, String reps, String equipment) {
         this.type = type;
         this.name = name;
         this.reps = reps;
@@ -31,9 +32,7 @@ public class Workout {
         return reps;
     }
 
-    public String getEquipment() {
-        return equipment;
-    }
+
 
     @NonNull
     @Override
