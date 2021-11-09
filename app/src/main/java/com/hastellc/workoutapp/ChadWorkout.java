@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,6 +43,22 @@ public class ChadWorkout extends AppCompatActivity {
 
         adapter.clear();
         adapter.addAll(workouts);
+
+        AdapterView.OnItemClickListener itemClickListener =
+                new AdapterView.OnItemClickListener(){
+                    public void onItemClick(AdapterView<?> listView,
+                                            View itemView,
+                                            int position,
+                                            long id) {
+
+                            Intent intent = new Intent(ChadWorkout.this,
+                                    Tutorials.class);
+                        //intent.putExtra(Tutorials., (int) id);
+                        startActivity(intent);
+                    }
+                };
+        mWorkoutList.setOnItemClickListener(itemClickListener);
+
     }
 
     class WorkoutAdapter extends ArrayAdapter<Workout> {
