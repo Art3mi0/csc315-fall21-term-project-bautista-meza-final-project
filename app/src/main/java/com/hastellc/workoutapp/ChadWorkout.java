@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 
@@ -77,7 +77,9 @@ public class ChadWorkout extends AppCompatActivity {
 
                             Intent intent = new Intent(ChadWorkout.this,
                                     Tutorials.class);
-                        //intent.putExtra(Tutorials., (int) id);
+
+                        String name = workouts.get(position).getName();
+                        intent.putExtra(Tutorials.EXTRASTUFF, name);
                         startActivity(intent);
                     }
                 };
