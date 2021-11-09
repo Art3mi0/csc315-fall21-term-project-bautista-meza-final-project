@@ -41,6 +41,7 @@ public class ChadWorkout extends AppCompatActivity {
     private ListView mWorkoutList;
     private EditText mFavoriteName;
     private Button mFavoriteButton;
+    private ArrayList<Workout> workouts;
 
     private String COLLECTION;
 
@@ -62,7 +63,7 @@ public class ChadWorkout extends AppCompatActivity {
         adapter = new ChadWorkout.WorkoutAdapter(this, new ArrayList<Workout>());
         mWorkoutList.setAdapter(adapter);
 
-        ArrayList<Workout> workouts = MainActivity.mRandomWorkout;
+        workouts = MainActivity.mRandomWorkout;
 
         adapter.clear();
         adapter.addAll(workouts);
@@ -116,15 +117,12 @@ public class ChadWorkout extends AppCompatActivity {
         if (checkText()) {
             return;
         }
-        Toast.makeText(ChadWorkout.this, "test", Toast.LENGTH_LONG);
-        Log.d(TAG, "test");
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-        String id = user.getEmail();
+        String email = user.getEmail();
         String name = mFavoriteName.getText().toString();
-        COLLECTION = id + "'s History";
-
+        COLLECTION = email + "'s Favorites";
         Favorite favorite = new Favorite(name);
 
         Log.d(TAG, "Submitted name: " + favorite.getName());
@@ -148,6 +146,32 @@ public class ChadWorkout extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        COLLECTION = email + " " + name;
+        Workout w;
+        for (int i = 0; i < workouts.size(); i++) {
+            w = workouts.get(i);
+            mDb.collection(COLLECTION)
+                    .add(w)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "Workout added successfully.");
+                            Toast.makeText(ChadWorkout.this,
+                                    "Workout added!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Could not add workout!");
+                            Toast.makeText(ChadWorkout.this,
+                                    "Failed to add workout!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     private boolean checkText() {
@@ -156,7 +180,7 @@ public class ChadWorkout extends AppCompatActivity {
         if (!text.isEmpty()) {
             return false;
         } else {
-            Toast.makeText(ChadWorkout.this, "Name can't be empty", Toast.LENGTH_LONG);
+            Toast.makeText(ChadWorkout.this, "Name can't be empty", Toast.LENGTH_LONG).show();
             return true;
         }
     }

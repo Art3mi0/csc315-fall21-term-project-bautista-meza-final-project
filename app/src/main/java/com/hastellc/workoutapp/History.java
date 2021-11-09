@@ -14,9 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 public class History extends AppCompatActivity {
+    private FirebaseAuth mAuth;
+
     private ListView mWorkoutList;
     private ArrayAdapter<Workout> adapter;
 

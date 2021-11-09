@@ -41,8 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/favorite_label"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hello_favorites"
             />
 
         <TextView
@@ -51,10 +51,9 @@
             android:layout_height="wrap_content"
             android:text="@string/favorites_instructions"
             android:textColor="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/favorite_listView" />
+            app:layout_constraintTop_toBottomOf="@id/hello_favorites" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
