@@ -24,9 +24,27 @@
             android:layout_marginTop="48dp"
             android:textSize="24sp"
             android:text="@string/begin_workout"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@id/favorite_button"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/favorite_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Name your workout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <Button
+            android:id="@+id/favorite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Workout"
+            android:onClick="onFavorite"
+            app:layout_constraintTop_toBottomOf="@id/favorite_text"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
         <ListView
             android:id="@+id/workoutListView"

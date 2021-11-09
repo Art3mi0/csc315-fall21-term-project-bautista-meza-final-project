@@ -8,21 +8,40 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class ChadWorkout extends AppCompatActivity {
 
+    private final FirebaseFirestore mDb = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    private static final String TAG = "ChadWorkout";
+
     public final static String WORKOUT_KEY = "";
     private ListView mWorkoutList;
+    private EditText mFavoriteName;
+    private Button mFavoriteButton;
+
+    private String COLLECTION;
 
     private ArrayAdapter<Workout> adapter;
 
@@ -33,7 +52,11 @@ public class ChadWorkout extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFavoriteName = findViewById(R.id.favorite_text);
+        mFavoriteButton= findViewById(R.id.favorite_button);
         mWorkoutList = findViewById(R.id.workoutListView);
+        mAuth = FirebaseAuth.getInstance();
 
         adapter = new ChadWorkout.WorkoutAdapter(this, new ArrayList<Workout>());
         mWorkoutList.setAdapter(adapter);
@@ -72,6 +95,53 @@ public class ChadWorkout extends AppCompatActivity {
         }
     }
 
+    public void onFavorite(View view) {
+        if (checkText()) {
+            return;
+        }
+        Toast.makeText(ChadWorkout.this, "test", Toast.LENGTH_LONG);
+        Log.d(TAG, "test");
 
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        String id = user.getEmail();
+        String name = mFavoriteName.getText().toString();
+        COLLECTION = id + "'s History";
+
+        Favorite favorite = new Favorite(name);
+
+        Log.d(TAG, "Submitted name: " + favorite.getName());
+        mDb.collection(COLLECTION)
+                .add(favorite)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "Workout added successfully.");
+                        Toast.makeText(ChadWorkout.this,
+                                "Workout added!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Could not add workout!");
+                        Toast.makeText(ChadWorkout.this,
+                                "Failed to add workout!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private boolean checkText() {
+        String text = mFavoriteName.getText().toString();
+
+        if (!text.isEmpty()) {
+            return false;
+        } else {
+            Toast.makeText(ChadWorkout.this, "Name can't be empty", Toast.LENGTH_LONG);
+            return true;
+        }
+    }
 
 }
