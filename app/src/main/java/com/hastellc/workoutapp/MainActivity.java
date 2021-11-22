@@ -128,11 +128,10 @@ public class MainActivity extends AppCompatActivity {
     public void onGenerate(View view) {
         Random rand = new Random();
         Workout workout;
-        int arraySize = mWorkouts.size() - 1;
         mRandomWorkout = new ArrayList<>();
 
         while (mRandomWorkout.size() != 2) {
-            workout = mWorkouts.get(rand.nextInt(arraySize));
+            workout = mWorkouts.get(rand.nextInt(mWorkouts.size()));
             if (!mRandomWorkout.contains(workout)) {
                 mRandomWorkout.add(workout);
             }
