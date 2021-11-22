@@ -63,7 +63,16 @@ public class ChadWorkout extends AppCompatActivity {
         adapter = new ChadWorkout.WorkoutAdapter(this, new ArrayList<Workout>());
         mWorkoutList.setAdapter(adapter);
 
-        workouts = MainActivity.mRandomWorkout;
+        ArrayList<String> mExtra = getIntent().getStringArrayListExtra(WORKOUT_KEY);
+        int count = 0;
+        Workout w;
+        workouts = new ArrayList<Workout>();
+        while (count < mExtra.size()) {
+            w = new Workout(mExtra.get(count), mExtra.get(count + 1), mExtra.get(count + 2), mExtra.get(count + 3));
+            workouts.add(w);
+            count += 4;
+        }
+
 
         adapter.clear();
         adapter.addAll(workouts);

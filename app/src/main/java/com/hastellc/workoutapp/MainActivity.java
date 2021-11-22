@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText mPasswordField;
     private ListView mWorkoutList;
     private ArrayList<Workout> mWorkouts;
-    public static ArrayList<Workout> mRandomWorkout;
+    private ArrayList<Workout> mRandomWorkout;
+    private ArrayList<String> mExtra;
 
     private boolean logoutItemView = true;
 
@@ -145,7 +146,15 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Can't begin what hasn't been made", Toast.LENGTH_SHORT).show();
             return;
         }
+        mExtra = new ArrayList<String>();
+        for (int i = 0; i < mRandomWorkout.size(); i ++) {
+            mExtra.add(mRandomWorkout.get(i).getType());
+            mExtra.add(mRandomWorkout.get(i).getName());
+            mExtra.add(mRandomWorkout.get(i).getReps());
+            mExtra.add(mRandomWorkout.get(i).getEquipment());
+        }
         Intent intent = new Intent(this, ChadWorkout.class);
+        intent.putStringArrayListExtra(ChadWorkout.WORKOUT_KEY, mExtra);
         startActivity(intent);
     }
 
