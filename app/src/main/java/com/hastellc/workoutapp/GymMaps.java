@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.hastellc.workoutapp.databinding.ActivityGymMapsBinding;
@@ -20,19 +22,17 @@ public class GymMaps extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private ActivityGymMapsBinding binding;
 
-    FusedLocationProviderClient mFusedLocationClient;
 
-    public static final String LAT = "";
-    public static final String LONG = "";
+    public static final String LATITUDE = "";
+    public static final String LONGITUDE = "l";
 
-    private double lat;
-    private double longi;
+    private double latitude;
+    private double longitude;
+    private String TAG = "GymMaps";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         binding = ActivityGymMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -43,8 +43,9 @@ public class GymMaps extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
         Intent intent = getIntent();
-        lat = intent.getDoubleExtra(LAT,0);
-        longi = intent.getDoubleExtra(LONG,0);
+        latitude = intent.getDoubleExtra(LATITUDE,0);
+        longitude = intent.getDoubleExtra(LONGITUDE,0);
+        Log.d(TAG, "lat is " + String.valueOf(latitude) + " and long is " + String.valueOf(longitude));
     }
 
     /**
@@ -59,6 +60,8 @@ public class GymMaps extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        UiSettings setting = mMap.getUiSettings();
+        setting.setZoomControlsEnabled(true);
 
 
         // Add a marker in Sydney and move the camera

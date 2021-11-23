@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Workout> mRandomWorkout;
     private ArrayList<Favorite> mFavorites;
     private ArrayList<String> mExtra;
+    double latitude;
+    double longitude;
 
     private boolean logoutItemView = true;
 
@@ -250,21 +252,22 @@ public class MainActivity extends AppCompatActivity {
         } else {
             intent = new Intent(this, GymMaps.class);
 
-//            mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(
-//                    this,
-//                    new OnSuccessListener<Location>() {
-//                        @Override
-//                        public void onSuccess(Location location) {
-//                            double latitude = location.getLatitude();
-//                            double longitude = location.getLongitude();
-//
-//
-//                            intent.putExtra(GymMaps.LAT , latitude);
-//                            intent.putExtra(GymMaps.LONG, longitude);
-//                        }
-//                    }
-//            );
-            startActivity(intent);
+            mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(
+                    this,
+                    location -> {
+                        latitude = 0.0;
+                        if (location != null) {
+                            String LATITUDE = "";
+                            String LONGITUDE = "l";
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            Log.d(TAG, "latitude is " + String.valueOf(latitude));
+                            intent.putExtra(LATITUDE, latitude);
+                            intent.putExtra(LONGITUDE, longitude);
+                            startActivity(intent);
+                        }
+                    }
+            );
         }
     }
 
