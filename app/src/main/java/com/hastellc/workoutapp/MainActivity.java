@@ -55,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private static final String TAG = "MainActivity";
+    private String COLLECTION;
 
     private final FirebaseFirestore mDb = FirebaseFirestore.getInstance();
 
-    private ArrayAdapter<Workout> adapter;
+    private ArrayAdapter<Workout> adapterWorkouts;
+    private ArrayAdapter<Favorite> adapterFavorites;
 
     private ConstraintLayout mLoggedInGroup;
     private ConstraintLayout mLoggedOutGroup;
@@ -66,8 +68,10 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEmailField;
     private EditText mPasswordField;
     private ListView mWorkoutList;
+    private ListView mFavoritesList;
     private ArrayList<Workout> mWorkouts;
     private ArrayList<Workout> mRandomWorkout;
+    private ArrayList<Favorite> mFavorites;
     private ArrayList<String> mExtra;
 
     private boolean logoutItemView = true;
@@ -123,16 +127,16 @@ public class MainActivity extends AppCompatActivity {
         mEmailField = findViewById(R.id.email);
         mPasswordField = findViewById(R.id.password);
         mWorkoutList = findViewById(R.id.workoutListView);
+        mFavoritesList = findViewById(R.id.favoriteListView);
 
-        adapter = new WorkoutAdapter(this, new ArrayList<Workout>());
-        mWorkoutList.setAdapter(adapter);
+        adapterWorkouts = new WorkoutAdapter(this, new ArrayList<Workout>());
+        adapterFavorites = new FavoriteAdapter(this, new ArrayList<Favorite>());
+        mWorkoutList.setAdapter(adapterWorkouts);
+        mFavoritesList.setAdapter(adapterFavorites);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-
-
-
 
         Button recordLocationBtn = findViewById(R.id.gym_map);
         recordLocationBtn.setOnClickListener(this::findGyms);
@@ -162,6 +166,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    class FavoriteAdapter extends ArrayAdapter<Favorite> {
+
+        ArrayList<Favorite> favoritesList;
+        FavoriteAdapter(Context context, ArrayList<Favorite> favoritesList) {
+            super(context, 0, favoritesList);
+            this.favoritesList = favoritesList;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.favorite_list_item, parent, false);
+            }
+
+            TextView favoriteName = convertView.findViewById(R.id.favoriteName);
+
+            Favorite f = favoritesList.get(position);
+            favoriteName.setText(f.getName());
+
+            return convertView;
+        }
+    }
+
     public void getWorkouts() {
         mDb.collection("workouts")
                 .get()
@@ -176,6 +204,34 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void getFavorites() {
+        mDb.collection(COLLECTION)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public  void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        mFavorites = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Favorite f = document.toObject(Favorite.class);
+                            mFavorites.add(f);
+                            Log.d(TAG, f.getName());
+                        }
+                        adapterFavorites.clear();
+                        if (mFavorites != null) {
+                            adapterFavorites.addAll(mFavorites);
+                        }
+                    }
+                }
+                );
+    }
+
+    public void setFavoriteAdapter() {
+        adapterFavorites.clear();
+        if (mFavorites != null) {
+            adapterFavorites.addAll(mFavorites);
+        }
     }
 
 
@@ -224,8 +280,8 @@ public class MainActivity extends AppCompatActivity {
                 mRandomWorkout.add(workout);
             }
         }
-        adapter.clear();
-        adapter.addAll(mRandomWorkout);
+        adapterWorkouts.clear();
+        adapterWorkouts.addAll(mRandomWorkout);
     }
 
     public void onBeginChadWorkout(View view){
@@ -254,6 +310,8 @@ public class MainActivity extends AppCompatActivity {
             mLoggedOutGroup.setVisibility(View.GONE);
             mLoggedInGroup.setVisibility(View.VISIBLE);
             mNameLabel.setText(String.format(getResources().getString(R.string.hello), currentUser.getEmail()));
+            COLLECTION = currentUser.getEmail() + "'s Favorites";
+            getFavorites();
             getWorkouts();
         } else {
             logoutItemView = false;
