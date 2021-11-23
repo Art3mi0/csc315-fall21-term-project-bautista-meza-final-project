@@ -65,7 +65,7 @@ public class GymMaps extends FragmentActivity implements OnMapReadyCallback {
 
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(lat, longi);
+        LatLng sydney = new LatLng(latitude, longitude);
 
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
