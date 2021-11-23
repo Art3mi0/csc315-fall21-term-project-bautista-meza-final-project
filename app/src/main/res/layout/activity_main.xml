@@ -40,7 +40,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hello" />
+            app:layout_constraintTop_toBottomOf="@id/gym_map" />
 
         <Button
             android:id="@+id/begin_chad_transformation_button"
@@ -56,6 +56,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/workout_button"
+            app:layout_constraintTop_toBottomOf="@id/gym_map" />
+
+        <Button
+            android:id="@+id/gym_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Gyms near me!"
+            android:onClick="findGyms"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hello" />
 
         <ListView

@@ -1,13 +1,21 @@
 package com.hastellc.workoutapp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,6 +32,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -62,12 +72,50 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean logoutItemView = true;
 
+
+
+    ActivityResultLauncher<String[]> locationPermissionRequest =
+            registerForActivityResult(new ActivityResultContracts
+                            .RequestMultiplePermissions(), result -> {
+                Boolean fineLocationGranted = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    fineLocationGranted = result.getOrDefault(
+                            Manifest.permission.ACCESS_FINE_LOCATION, false);
+                }
+                Boolean coarseLocationGranted = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    coarseLocationGranted = result.getOrDefault(
+                                    Manifest.permission.ACCESS_COARSE_LOCATION, false);
+                }
+
+                if (fineLocationGranted != null && fineLocationGranted) {
+                            // Precise location access granted.
+                            Toast.makeText(this, "I can see precise location!", Toast.LENGTH_SHORT).show();
+                        } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                            // Only approximate location access granted.
+                            Toast.makeText(this, "I can see approximate location!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // No location access granted.
+                            Toast.makeText(this, "I need permission to access location in order to record locations.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            );
+
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
+    private Intent intent;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         mLoggedInGroup = findViewById(R.id.logged_in_group);
         mLoggedOutGroup = findViewById(R.id.logged_out_group);
@@ -83,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
 
+
+
+
+        Button recordLocationBtn = findViewById(R.id.gym_map);
+        recordLocationBtn.setOnClickListener(this::findGyms);
     }
 
     class WorkoutAdapter extends ArrayAdapter<Workout> {
@@ -124,6 +177,41 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+    public void findGyms(View view) {
+        boolean hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+
+        boolean hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+
+        if (!hasCoarseLocationPermission && !hasFineLocationPermission) {
+            Toast.makeText(this, "I need permission to access location in order to record locations.", Toast.LENGTH_SHORT).show();
+            locationPermissionRequest.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION});
+        } else {
+            intent = new Intent(this, GymMaps.class);
+
+//            mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(
+//                    this,
+//                    new OnSuccessListener<Location>() {
+//                        @Override
+//                        public void onSuccess(Location location) {
+//                            double latitude = location.getLatitude();
+//                            double longitude = location.getLongitude();
+//
+//
+//                            intent.putExtra(GymMaps.LAT , latitude);
+//                            intent.putExtra(GymMaps.LONG, longitude);
+//                        }
+//                    }
+//            );
+            startActivity(intent);
+        }
+    }
+
 
     public void onGenerate(View view) {
         Random rand = new Random();
