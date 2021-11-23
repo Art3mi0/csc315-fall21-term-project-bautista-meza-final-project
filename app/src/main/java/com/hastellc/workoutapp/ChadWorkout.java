@@ -27,6 +27,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
@@ -42,8 +44,10 @@ public class ChadWorkout extends AppCompatActivity {
     private EditText mFavoriteName;
     private Button mFavoriteButton;
     private ArrayList<Workout> workouts;
+    private ArrayList<Favorite> favorites;
 
     private String COLLECTION;
+    private Boolean nameCheck;
 
     private ArrayAdapter<Workout> adapter;
 
@@ -59,6 +63,7 @@ public class ChadWorkout extends AppCompatActivity {
         mFavoriteButton= findViewById(R.id.favorite_button);
         mWorkoutList = findViewById(R.id.workoutListView);
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
 
         adapter = new ChadWorkout.WorkoutAdapter(this, new ArrayList<Workout>());
         mWorkoutList.setAdapter(adapter);
@@ -93,6 +98,22 @@ public class ChadWorkout extends AppCompatActivity {
                     }
                 };
         mWorkoutList.setOnItemClickListener(itemClickListener);
+
+        String email = user.getEmail();
+        COLLECTION = email + "'s Favorites";
+
+        favorites = new ArrayList<Favorite>();
+        mDb.collection(COLLECTION)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Favorite favorite = document.toObject(Favorite.class);
+                            favorites.add(favorite);
+                        }
+                    }
+                });
 
     }
 
@@ -129,12 +150,13 @@ public class ChadWorkout extends AppCompatActivity {
             return;
         }
 
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        String email = user.getEmail();
         String name = mFavoriteName.getText().toString();
-        COLLECTION = email + "'s Favorites";
-        Favorite favorite = new Favorite(name);
+        if (checkName(name)) {
+            Toast.makeText(ChadWorkout.this, "You already named a workout this", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Favorite favorite = new Favorite(name, workouts.get(0).getName(), workouts.get(1).getName());
+        favorites.add(favorite);
 
         Log.d(TAG, "Submitted name: " + favorite.getName());
         mDb.collection(COLLECTION)
@@ -157,32 +179,6 @@ public class ChadWorkout extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        COLLECTION = email + " " + name;
-        Workout w;
-        for (int i = 0; i < workouts.size(); i++) {
-            w = workouts.get(i);
-            mDb.collection(COLLECTION)
-                    .add(w)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "Workout added successfully.");
-                            Toast.makeText(ChadWorkout.this,
-                                    "Workout added!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Could not add workout!");
-                            Toast.makeText(ChadWorkout.this,
-                                    "Failed to add workout!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
     }
 
     private boolean checkText() {
@@ -194,6 +190,18 @@ public class ChadWorkout extends AppCompatActivity {
             Toast.makeText(ChadWorkout.this, "Name can't be empty", Toast.LENGTH_LONG).show();
             return true;
         }
+    }
+
+    private boolean checkName(String name) {
+        nameCheck = false;
+        for (int i = 0; i < favorites.size(); i ++) {
+            Log.d(TAG, "Checking if " + name + " = " + favorites.get(i));
+            if (name.equals(favorites.get(i).getName())) {
+                nameCheck = true;
+            }
+        }
+
+        return nameCheck;
     }
 
 }
