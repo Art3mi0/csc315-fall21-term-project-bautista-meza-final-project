@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -223,6 +224,26 @@ public class MainActivity extends AppCompatActivity {
                         adapterFavorites.clear();
                         if (mFavorites != null) {
                             adapterFavorites.addAll(mFavorites);
+
+                            AdapterView.OnItemClickListener itemClickListener =
+                                    new AdapterView.OnItemClickListener(){
+                                        public void onItemClick(AdapterView<?> listView,
+                                                                View itemView,
+                                                                int position,
+                                                                long id) {
+
+                                            Intent intent = new Intent(MainActivity.this,
+                                                    ChadWorkout.class);
+
+                                            mExtra = new ArrayList<String>();
+                                            mExtra.add(mFavorites.get(position).getWorkout1());
+                                            mExtra.add(mFavorites.get(position).getWorkout2());
+                                            intent.putExtra(ChadWorkout.WORKOUT_KEY, mExtra);
+                                            startActivity(intent);
+                                        }
+                                    };
+
+                            mFavoritesList.setOnItemClickListener(itemClickListener);
                         }
                     }
                 }
