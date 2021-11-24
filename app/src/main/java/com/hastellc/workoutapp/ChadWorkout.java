@@ -71,6 +71,7 @@ public class ChadWorkout extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("*Unnamed Workout");
 
         mFavoriteName = findViewById(R.id.favorite_text);
         mFavoriteButton = findViewById(R.id.favorite_button);

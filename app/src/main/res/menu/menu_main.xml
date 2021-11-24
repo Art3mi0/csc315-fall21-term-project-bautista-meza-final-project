@@ -8,13 +8,4 @@
         android:orderInCategory="1"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/history"
-        android:title="@string/history"
-        android:orderInCategory="1"
-        app:showAsAction="collapseActionView" />
-
-    <item android:id="@+id/favorites"
-        android:title="@string/favorites"
-        android:orderInCategory="1"
-        app:showAsAction="collapseActionView" />
 </menu>
