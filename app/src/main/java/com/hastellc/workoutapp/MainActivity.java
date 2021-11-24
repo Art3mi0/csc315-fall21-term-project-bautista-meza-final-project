@@ -435,17 +435,11 @@ public class MainActivity extends AppCompatActivity {
         // The clean way of changing menu item visibility
         // just call the invalidateOptionsMenu() method witch calls this
         MenuItem logoutItem = menu.findItem(R.id.sign_out);
-        MenuItem historyItem = menu.findItem(R.id.history);
-        MenuItem favoritesItem = menu.findItem(R.id.favorites);
         if (logoutItemView) {
             logoutItem.setVisible(true);
-            historyItem.setVisible(true);
-            favoritesItem.setVisible(true);
             return true;
         } else {
             logoutItem.setVisible(false);
-            historyItem.setVisible(false);
-            favoritesItem.setVisible(false);
         }
         return true;
     }
@@ -465,16 +459,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
-            case R.id.history:
-                Intent intent = new Intent(this, History.class);
-                startActivity(intent);
-                return true;
-
-            case R.id.favorites:
-                Intent intent2  = new Intent(this,Favorites.class);
-                startActivity(intent2);
-                return true;
         }
 
     }
