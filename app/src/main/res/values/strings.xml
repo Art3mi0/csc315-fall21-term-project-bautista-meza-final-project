@@ -10,6 +10,8 @@
     <string name="begin_workout_button">Begin Chad Workout</string>
     <string name="history">HISTORY</string>
     <string name="favorites">Favorites</string>
+    <string name="delete_button">Delete Workout</string>
+    <string name="save_button">Save Workout</string>
 
     <string name="history_instructions">Click any workout to revisit it. (WIP)</string>
     <string name="favorites_instructions">Click any favorited workout to revisit it. (WIP)</string>

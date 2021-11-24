@@ -42,9 +42,11 @@ public class ChadWorkout extends AppCompatActivity {
     private static final String TAG = "ChadWorkout";
 
     public final static String WORKOUT_KEY = "";
+    public final static String FAVORITE_KEY = "name";
     private ListView mWorkoutList;
     private EditText mFavoriteName;
     private Button mFavoriteButton;
+    private Button mDeleteButton;
     private ArrayList<Workout> mWorkouts;
     private ArrayList<Favorite> favorites;
     private ArrayList<Workout> mChosenWorkouts;
@@ -53,7 +55,9 @@ public class ChadWorkout extends AppCompatActivity {
     private String COLLECTION;
     private Boolean nameCheck;
     private String email;
+    private String favName;
     private int once;
+    private String docId;
 
     private ArrayAdapter<Workout> adapter;
 
@@ -65,10 +69,10 @@ public class ChadWorkout extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Title");
 
         mFavoriteName = findViewById(R.id.favorite_text);
-        mFavoriteButton= findViewById(R.id.favorite_button);
+        mFavoriteButton = findViewById(R.id.favorite_button);
+        mDeleteButton = findViewById(R.id.delete_workout);
         mWorkoutList = findViewById(R.id.workoutListView);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -78,6 +82,11 @@ public class ChadWorkout extends AppCompatActivity {
         mWorkoutList.setAdapter(adapter);
 
         mExtra = getIntent().getStringArrayListExtra(WORKOUT_KEY);
+        favName = getIntent().getStringExtra(FAVORITE_KEY);
+        if (favName != null) {
+            getSupportActionBar().setTitle(favName);
+            mDeleteButton.setVisibility(View.VISIBLE);
+        }
         getWorkouts();
         once = 1;
 
@@ -175,6 +184,27 @@ public class ChadWorkout extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    public void onDelete(View view) {
+        mDb.collection(COLLECTION)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Favorite f = document.toObject(Favorite.class);
+                            if (f.getName().equals(favName)) {
+                                docId = document.getId();
+                                break;
+                            }
+                        }
+                        mDb.collection(COLLECTION).document(docId).delete();
+                        Toast.makeText(getApplicationContext(),"Deleted " + favName + " from favorites", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(ChadWorkout.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
     }
 
     public void onFavorite(View view) {

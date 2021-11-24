@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                                             mExtra.add(mFavorites.get(position).getWorkout1());
                                             mExtra.add(mFavorites.get(position).getWorkout2());
                                             intent.putExtra(ChadWorkout.WORKOUT_KEY, mExtra);
+                                            intent.putExtra(ChadWorkout.FAVORITE_KEY, mFavorites.get(position).getName());
                                             startActivity(intent);
                                         }
                                     };
