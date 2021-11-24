@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ public class ChadWorkout extends AppCompatActivity {
     private String favName;
     private int once;
     private String docId;
+    private Favorite f;
 
     private ArrayAdapter<Workout> adapter;
 
@@ -86,6 +88,7 @@ public class ChadWorkout extends AppCompatActivity {
         if (favName != null) {
             getSupportActionBar().setTitle(favName);
             mDeleteButton.setVisibility(View.VISIBLE);
+            mFavoriteButton.setText("Update Workout Name");
         }
         getWorkouts();
         once = 1;
@@ -218,29 +221,65 @@ public class ChadWorkout extends AppCompatActivity {
             return;
         }
         Favorite favorite = new Favorite(name, mChosenWorkouts.get(0).getName(), mChosenWorkouts.get(1).getName());
-        favorites.add(favorite);
 
-        Log.d(TAG, "Submitted name: " + favorite.getName());
-        mDb.collection(COLLECTION)
-                .add(favorite)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "Workout added successfully.");
-                        Toast.makeText(ChadWorkout.this,
-                                "Workout added!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Could not add workout!");
-                        Toast.makeText(ChadWorkout.this,
-                                "Failed to add workout!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+        if (favName != null) {
+            String oldName = (String) getSupportActionBar().getTitle();
+            getSupportActionBar().setTitle(name);
+            invalidateOptionsMenu();
+            for (int i = 0; i < favorites.size(); i ++) {
+                if (oldName.equals(favorites.get(i).getName())) {
+                    favorites.remove(i);
+                    break;
+                }
+            }
+            favorites.add(favorite);
+
+            mDb.collection(COLLECTION)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                f = document.toObject(Favorite.class);
+                                if (f.getName().equals(oldName)) {
+                                    docId = document.getId();
+                                    break;
+                                }
+                            }
+                            mDb.collection(COLLECTION).document(docId).set(favorite);
+                            Toast.makeText(getApplicationContext(),"Updated " + f.getName() + " from favorites" +
+                                    " to " + name, Toast.LENGTH_LONG).show();
+                        }
+                    });
+        } else {
+            favorites.add(favorite);
+            Log.d(TAG, "Submitted name: " + favorite.getName());
+            mDb.collection(COLLECTION)
+                    .add(favorite)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "Workout added successfully.");
+                            Toast.makeText(ChadWorkout.this,
+                                    "Workout added!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Could not add workout!");
+                            Toast.makeText(ChadWorkout.this,
+                                    "Failed to add workout!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            favName = favorite.getName();
+            mDeleteButton.setVisibility(View.VISIBLE);
+            mFavoriteButton.setText("Update Workout Name");
+            getSupportActionBar().setTitle(favName);
+            invalidateOptionsMenu();
+        }
     }
 
     private boolean checkText() {
