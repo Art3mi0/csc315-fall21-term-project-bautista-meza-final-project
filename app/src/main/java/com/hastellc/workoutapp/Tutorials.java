@@ -41,6 +41,7 @@ public class Tutorials extends AppCompatActivity {
 
         Intent intent = getIntent();
         String stringz = intent.getStringExtra(EXTRASTUFF);
+        getSupportActionBar().setTitle(stringz + " Example");
 
 
 

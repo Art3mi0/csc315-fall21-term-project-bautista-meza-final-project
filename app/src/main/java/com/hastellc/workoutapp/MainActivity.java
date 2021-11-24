@@ -229,14 +229,6 @@ public class MainActivity extends AppCompatActivity {
                 );
     }
 
-    public void setFavoriteAdapter() {
-        adapterFavorites.clear();
-        if (mFavorites != null) {
-            adapterFavorites.addAll(mFavorites);
-        }
-    }
-
-
     public void findGyms(View view) {
         boolean hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -294,10 +286,7 @@ public class MainActivity extends AppCompatActivity {
         }
         mExtra = new ArrayList<String>();
         for (int i = 0; i < mRandomWorkout.size(); i ++) {
-            mExtra.add(mRandomWorkout.get(i).getType());
             mExtra.add(mRandomWorkout.get(i).getName());
-            mExtra.add(mRandomWorkout.get(i).getReps());
-            mExtra.add(mRandomWorkout.get(i).getEquipment());
         }
         Intent intent = new Intent(this, ChadWorkout.class);
         intent.putStringArrayListExtra(ChadWorkout.WORKOUT_KEY, mExtra);

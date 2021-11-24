@@ -45,11 +45,15 @@ public class ChadWorkout extends AppCompatActivity {
     private ListView mWorkoutList;
     private EditText mFavoriteName;
     private Button mFavoriteButton;
-    private ArrayList<Workout> workouts;
+    private ArrayList<Workout> mWorkouts;
     private ArrayList<Favorite> favorites;
+    private ArrayList<Workout> mChosenWorkouts;
+    private ArrayList<String> mExtra;
 
     private String COLLECTION;
     private Boolean nameCheck;
+    private String email;
+    private int once;
 
     private ArrayAdapter<Workout> adapter;
 
@@ -61,29 +65,21 @@ public class ChadWorkout extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Title");
 
         mFavoriteName = findViewById(R.id.favorite_text);
         mFavoriteButton= findViewById(R.id.favorite_button);
         mWorkoutList = findViewById(R.id.workoutListView);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
+        email = user.getEmail();
 
         adapter = new ChadWorkout.WorkoutAdapter(this, new ArrayList<Workout>());
         mWorkoutList.setAdapter(adapter);
 
-        ArrayList<String> mExtra = getIntent().getStringArrayListExtra(WORKOUT_KEY);
-        int count = 0;
-        Workout w;
-        workouts = new ArrayList<Workout>();
-        while (count < mExtra.size()) {
-            w = new Workout(mExtra.get(count), mExtra.get(count + 1), mExtra.get(count + 2), mExtra.get(count + 3));
-            workouts.add(w);
-            count += 4;
-        }
-
-
-        adapter.clear();
-        adapter.addAll(workouts);
+        mExtra = getIntent().getStringArrayListExtra(WORKOUT_KEY);
+        getWorkouts();
+        once = 1;
 
         AdapterView.OnItemClickListener itemClickListener =
                 new AdapterView.OnItemClickListener(){
@@ -95,7 +91,7 @@ public class ChadWorkout extends AppCompatActivity {
                             Intent intent = new Intent(ChadWorkout.this,
                                     Tutorials.class);
 
-                        String name = workouts.get(position).getName();
+                        String name = mChosenWorkouts.get(position).getName();
                         intent.putExtra(Tutorials.EXTRASTUFF, name);
                         startActivity(intent);
                     }
@@ -148,6 +144,39 @@ public class ChadWorkout extends AppCompatActivity {
         }
     }
 
+    public void getWorkouts() {
+        if (once != 1) {
+            mDb.collection("workouts")
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            mWorkouts = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                Workout w = document.toObject(Workout.class);
+                                mWorkouts.add(w);
+                                Log.d(TAG, w.getType() + " " + w.getName() + " " + w.getReps());
+                            }
+                            int count = 0;
+                            mChosenWorkouts = new ArrayList<>();
+                            getWorkouts();
+                            while (count < mExtra.size()) {
+                                for (int i = 0; i < mWorkouts.size(); i++) {
+                                    if (mExtra.get(count).equals(mWorkouts.get(i).getName())) {
+                                        mChosenWorkouts.add(mWorkouts.get(i));
+                                        count++;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            adapter.clear();
+                            adapter.addAll(mChosenWorkouts);
+                        }
+                    });
+        }
+    }
+
     public void onFavorite(View view) {
         if (checkText()) {
             return;
@@ -158,7 +187,7 @@ public class ChadWorkout extends AppCompatActivity {
             Toast.makeText(ChadWorkout.this, "You already named a workout this", Toast.LENGTH_LONG).show();
             return;
         }
-        Favorite favorite = new Favorite(name, workouts.get(0).getName(), workouts.get(1).getName());
+        Favorite favorite = new Favorite(name, mChosenWorkouts.get(0).getName(), mChosenWorkouts.get(1).getName());
         favorites.add(favorite);
 
         Log.d(TAG, "Submitted name: " + favorite.getName());
