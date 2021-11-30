@@ -42,12 +42,6 @@
             android:name=".ChadWorkout"
             android:exported="false" />
         <activity
-            android:name=".Favorites"
-            android:exported="false" />
-        <activity
-            android:name=".History"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
