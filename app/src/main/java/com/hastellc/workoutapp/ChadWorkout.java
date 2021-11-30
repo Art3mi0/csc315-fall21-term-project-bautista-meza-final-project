@@ -221,7 +221,8 @@ public class ChadWorkout extends AppCompatActivity {
             Toast.makeText(ChadWorkout.this, "You already named a workout this", Toast.LENGTH_LONG).show();
             return;
         }
-        Favorite favorite = new Favorite(name, mChosenWorkouts.get(0).getName(), mChosenWorkouts.get(1).getName());
+        Favorite favorite = new Favorite(name, mChosenWorkouts.get(0).getName(), mChosenWorkouts.get(1).getName(),
+                mChosenWorkouts.get(2).getName(), mChosenWorkouts.get(3).getName());
 
         if (favName != null) {
             String oldName = (String) getSupportActionBar().getTitle();

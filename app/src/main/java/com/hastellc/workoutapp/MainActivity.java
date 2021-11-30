@@ -242,6 +242,8 @@ public class MainActivity extends AppCompatActivity {
                                             mExtra = new ArrayList<String>();
                                             mExtra.add(mFavorites.get(position).getWorkout1());
                                             mExtra.add(mFavorites.get(position).getWorkout2());
+                                            mExtra.add(mFavorites.get(position).getWorkout3());
+                                            mExtra.add(mFavorites.get(position).getWorkout4());
                                             intent.putExtra(ChadWorkout.WORKOUT_KEY, mExtra);
                                             intent.putExtra(ChadWorkout.FAVORITE_KEY, mFavorites.get(position).getName());
                                             startActivity(intent);
@@ -295,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
         Workout workout;
         mRandomWorkout = new ArrayList<>();
 
-        while (mRandomWorkout.size() != 2) {
+        while (mRandomWorkout.size() != 4) {
             workout = mWorkouts.get(rand.nextInt(mWorkouts.size()));
             if (!mRandomWorkout.contains(workout)) {
                 mRandomWorkout.add(workout);
