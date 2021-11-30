@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ConstraintLayout mLoggedInGroup;
     private ConstraintLayout mLoggedOutGroup;
-    private TextView mNameLabel;
+    //private TextView mNameLabel;
     private EditText mEmailField;
     private EditText mPasswordField;
     private ListView mWorkoutList;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         mLoggedInGroup = findViewById(R.id.logged_in_group);
         mLoggedOutGroup = findViewById(R.id.logged_out_group);
-        mNameLabel = findViewById(R.id.hello);
+        //mNameLabel = findViewById(R.id.hello);
         mEmailField = findViewById(R.id.email);
         mPasswordField = findViewById(R.id.password);
         mWorkoutList = findViewById(R.id.workoutListView);
@@ -186,11 +187,14 @@ public class MainActivity extends AppCompatActivity {
 
             TextView favoriteName = convertView.findViewById(R.id.favoriteName);
 
+            //favoriteName.setBackgroundColor(getResources().getColor(android.R.color.background_dark));
+
             Favorite f = favoritesList.get(position);
             favoriteName.setText(f.getName());
 
             return convertView;
         }
+
     }
 
     public void getWorkouts() {
@@ -323,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
             invalidateOptionsMenu();
             mLoggedOutGroup.setVisibility(View.GONE);
             mLoggedInGroup.setVisibility(View.VISIBLE);
-            mNameLabel.setText(String.format(getResources().getString(R.string.hello), currentUser.getEmail()));
+            //mNameLabel.setText(String.format(getResources().getString(R.string.hello), currentUser.getEmail()));
             COLLECTION = currentUser.getEmail() + "'s Favorites";
             getFavorites();
             getWorkouts();

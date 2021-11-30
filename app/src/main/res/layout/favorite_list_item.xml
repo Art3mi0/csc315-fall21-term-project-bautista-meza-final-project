@@ -4,25 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/favoriteNameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="@color/colorAccent"
-        android:text="Name:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/favoriteName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:background="@drawable/round_text_corners"
+        android:gravity="center"
         android:textColor="@color/colorAccent"
-        app:layout_constraintStart_toEndOf="@id/favoriteNameLabel"
-        app:layout_constraintTop_toTopOf="@id/favoriteNameLabel" />
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

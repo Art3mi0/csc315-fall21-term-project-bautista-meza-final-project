@@ -67,9 +67,39 @@ public class GymMaps extends FragmentActivity implements OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(latitude, longitude);
 
+        LatLng O2 = new LatLng(34.21911,-77.90468);
+        LatLng O2Racinedrive = new LatLng(34.24163,-77.86558);
+
+        LatLng planetFitness = new LatLng(34.24096,-77.89055);
+
+        LatLng anytimeFitness5060 = new LatLng(34.23784,-77.87740);
+        LatLng anytimeFitness3715 = new LatLng(34.17459,-77.89300);
+
+        LatLng atpFitness = new LatLng(34.25444,-77.85708);
+        LatLng tfFitness = new LatLng(34.24546,-77.88809);
+        LatLng goGirl = new LatLng(34.22099,-77.88823);
+        LatLng outSidetheBoxFitness = new LatLng(34.23212,-77.90376);
+        LatLng riseFitnessStudio = new LatLng(34.22574,-77.92376);
+        LatLng orangetheaoryfitness = new LatLng(34.23517,-77.83188);
+        LatLng unleashedFitness = new LatLng(34.17961,-77.92363);
+        LatLng ripxFit = new LatLng(34.21272,-77.88716);
+
+        mMap.addMarker(new MarkerOptions().position(ripxFit).title("RipX Fit"));
+        mMap.addMarker(new MarkerOptions().position(unleashedFitness).title("Unleashed Fitness"));
+        mMap.addMarker(new MarkerOptions().position(orangetheaoryfitness).title("Orange Theory Fitness"));
+        mMap.addMarker(new MarkerOptions().position(riseFitnessStudio).title("Rise Fitness"));
+        mMap.addMarker(new MarkerOptions().position(outSidetheBoxFitness).title("Out Side the Box Fitness"));
+        mMap.addMarker(new MarkerOptions().position(goGirl).title("Go Girl Fitness"));
+        mMap.addMarker(new MarkerOptions().position(tfFitness).title("TF Fitness"));
+        mMap.addMarker(new MarkerOptions().position(atpFitness).title("ATP Fitness"));
+        mMap.addMarker(new MarkerOptions().position(anytimeFitness3715).title("Anytime Fitness"));
+        mMap.addMarker(new MarkerOptions().position(anytimeFitness5060).title("Anytime Fitness"));
+        mMap.addMarker(new MarkerOptions().position(planetFitness).title("Planet Fitness"));
+        mMap.addMarker(new MarkerOptions().position(O2).title("O2 Fitness Independence Blvd"));
+
         mMap.addMarker(new MarkerOptions().position(sydney).title("YOUR APRROXIMATE LOCATION"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 5));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
 
 
 

@@ -10,6 +10,12 @@
         layout="@layout/toolbar_main"
         android:id="@+id/toolbar" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/logged_in_group"
         android:layout_width="wrap_content"
@@ -18,15 +24,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <TextView
+        <ImageView
             android:id="@+id/hello"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:textSize="24sp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/gigahead"
+
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="TODO" />
 
 
         <Button
@@ -73,13 +80,13 @@
 
         <ListView
             android:id="@+id/workoutListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:dividerHeight="-1dp"
             app:layout_constraintBottom_toTopOf="@id/favorites"
-            app:layout_constraintTop_toBottomOf="@id/workout_button"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/workout_button" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -88,23 +95,25 @@
             android:text="@string/favorites"
             android:layout_marginTop="12dp"
             android:textSize="24sp"
+
             app:layout_constraintTop_toBottomOf="@id/workoutListView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ListView
             android:id="@+id/favoriteListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:dividerHeight="-1dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/favorites"
-
-            />
-
+            android:nestedScrollingEnabled="true"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/logged_out_group"

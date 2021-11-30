@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:textSize="24dp"
         android:text="Workout:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,11 +17,17 @@
 
     <TextView
         android:id="@+id/workoutName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:textSize="24dp"
+        android:background="@drawable/round_text_corners"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/workoutNameLabel"
         app:layout_constraintTop_toTopOf="@id/workoutNameLabel" />
+
+
 
     <TextView
         android:id="@+id/workoutRepsLabel"
@@ -28,17 +35,25 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="Reps:"
+        android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/workoutNameLabel" />
+        app:layout_constraintTop_toBottomOf="@id/workoutName" />
 
     <TextView
         android:id="@+id/workoutReps"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/round_text_corners"
+        android:textColor="@color/colorAccent"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/workoutRepsLabel"
-        app:layout_constraintTop_toTopOf="@id/workoutRepsLabel" />
+        app:layout_constraintTop_toBottomOf="@id/workoutName" />
+
+
 
     <TextView
         android:id="@+id/workoutEquipmentLabel"
@@ -46,17 +61,23 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="Equipment:"
+        android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/workoutRepsLabel" />
 
     <TextView
         android:id="@+id/workoutEquipment"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/round_text_corners"
+        android:textColor="@color/colorAccent"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/workoutEquipmentLabel"
-        app:layout_constraintTop_toTopOf="@id/workoutEquipmentLabel" />
+        app:layout_constraintTop_toBottomOf="@id/workoutReps" />
 
 
 
